@@ -1,5 +1,7 @@
 // Dada Ki Jay Ho
 
+import { EUserType } from "../constants/enums";
+
 export default interface IUser {
     userId: string;
     name: string;
@@ -10,4 +12,5 @@ export default interface IUser {
     locLat: number;
     locLong: number;
     isPremium: boolean;
+    userType: EUserType;
 }

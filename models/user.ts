@@ -3,6 +3,7 @@
 // import Schema from mongoose
 import { Schema, model } from "mongoose";
 import IUser from "../interfaces/user";
+import { EUserType } from "../constants/enums";
 
 // create schema
 const UserSchema = new Schema<IUser>({
@@ -44,6 +45,12 @@ const UserSchema = new Schema<IUser>({
         type: Boolean,
         required: true,
         default: false,
+    },
+    userType: {
+        type: String,
+        enum: EUserType,
+        required: true,
+        default: EUserType.normal,
     },
 });
 
