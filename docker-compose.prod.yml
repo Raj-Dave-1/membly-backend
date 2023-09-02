@@ -1,0 +1,18 @@
+# Dada Ki Jay Ho
+
+
+version: '3'
+services:
+  membly-backend-app: 
+    build: 
+      context: .
+      args: 
+        NODE_ENV: production
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+    command: npm start
+    ports:
+      - 3000:3000
+    env_file:
+      - .env
