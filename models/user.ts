@@ -13,7 +13,7 @@ const UserSchema = new Schema<IUser>(
             required: true,
             unique: true,
         },
-        userName: {
+        username: {
             type: String,
             required: true,
             unique: true,

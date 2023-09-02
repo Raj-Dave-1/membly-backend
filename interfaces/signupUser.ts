@@ -1,7 +1,7 @@
 // Dada Ki Jay Ho
 
 export default interface ISignUpUser {
-    userName: string;
+    username: string;
     firstName: string;
     lastName: string;
     email: string;

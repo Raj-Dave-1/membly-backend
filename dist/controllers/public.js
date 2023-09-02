@@ -42,6 +42,7 @@ const uuid_1 = require("uuid");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_1 = __importDefault(require("../models/user"));
 const enums_1 = require("../constants/enums");
+const redis_client_1 = __importDefault(require("../utils/redis-client"));
 const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // get email id / username and password from body
@@ -54,9 +55,9 @@ const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* ()
         // check if user exists in database?
         let user;
         if (/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/.test(emailOrUserName))
-            user = yield user_1.default.findOne({ userName: emailOrUserName });
-        else
             user = yield user_1.default.findOne({ email: emailOrUserName });
+        else
+            user = yield user_1.default.findOne({ username: emailOrUserName });
         if (!user) {
             throw new Error("User with this email / username not found");
         }
@@ -64,12 +65,32 @@ const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* ()
         if (user.status === enums_1.EUserStatus.blocked) {
             throw new Error("User is blocked");
         }
+        const redisClient = redis_client_1.default.getInstance().getClient();
+        const tokenExists = yield redisClient.exists(user.userId);
+        if (tokenExists === 1) {
+            const token = yield redisClient.get(user.userId);
+            return res.send({
+                status: "success",
+                message: "you are already logged in",
+                token,
+                user: user,
+            });
+        }
         const TOKEN_SECRET = process.env.TOKEN_SECRET;
         if (!TOKEN_SECRET)
             throw new Error("Token secret not found");
         // generate jwt token for user
         const token = jwt.sign({ userId: user.userId, userType: user.userType }, TOKEN_SECRET);
         // add token to redis database
+        const REDIS_EXP_TIME = Number.parseInt(process.env.REDIS_EXP_TIME || "30000"); // default: 30 sec
+        const result = yield redisClient.setEx(user.userId, REDIS_EXP_TIME, token);
+        console.log(result);
+        return res.send({
+            status: "success",
+            redisResult: result,
+            token: token,
+            user: user,
+        });
     }
     catch (error) {
         return res.status(500).send({
@@ -89,7 +110,7 @@ const signup = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
             throw new Error("password is not provided");
         // check if user exists in database?
         let user = yield user_1.default.findOne({
-            userName: userData.userName,
+            userName: userData.username,
         });
         if (user) {
             throw new Error("User with this email / username already exists");
@@ -98,9 +119,10 @@ const signup = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
         const passwordHash = bcrypt_1.default.hashSync(userData.password, passwordSalt);
         const newUser = new user_1.default({
             userId: (0, uuid_1.v4)(),
-            userName: userData.userName,
+            username: userData.username,
             firstName: userData.firstName,
             lastName: userData.lastName,
+            email: userData.email,
             passwordHash: passwordHash,
             passwordSalt: passwordSalt,
             country: userData.country,
@@ -117,6 +139,11 @@ const signup = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
         // generate jwt token for user
         const token = jwt.sign({ userId: newUser.userId, userType: newUser.userType }, TOKEN_SECRET);
         // add token to redis database
+        // add token to redis database
+        const redisClient = redis_client_1.default.getInstance().getClient();
+        const REDIS_EXP_TIME = Number.parseInt(process.env.REDIS_EXP_TIME || "30000"); // default: 30 sec
+        const result = yield redisClient.setEx(token, REDIS_EXP_TIME, "valid");
+        console.log(result);
         return res.redirect(302, "/home");
     }
     catch (error) {

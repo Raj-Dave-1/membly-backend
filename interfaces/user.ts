@@ -5,7 +5,7 @@ import { EUserType, EUserStatus } from "../constants/enums";
 
 export default interface IUser extends Document {
     userId: string;
-    userName: string;
+    username: string;
     firstName: string;
     lastName: string;
     email: string;
