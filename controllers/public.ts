@@ -1,0 +1,119 @@
+// Dada Ki Jay Ho
+
+import { NextFunction, Request, Response } from "express";
+import * as jwt from "jsonwebtoken";
+import { v4 as uuidv4 } from "uuid";
+import bcrypt from "bcrypt";
+
+import User from "../models/user";
+import IUser from "../interfaces/user";
+import { EUserStatus, EUserType } from "../constants/enums";
+import ISignUpUser from "../interfaces/signupUser";
+
+export const login = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        // get email id / username and password from body
+        const emailOrUserName: string = req.body.emailOrUserName;
+        const password: string = req.body.password;
+
+        if (!emailOrUserName) throw new Error("email or username not provided");
+
+        if (!password) throw new Error("password is not provided");
+
+        // check if user exists in database?
+        let user: IUser | null;
+        if (/^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/.test(emailOrUserName))
+            user = await User.findOne({ userName: emailOrUserName });
+        else user = await User.findOne({ email: emailOrUserName });
+
+        if (!user) {
+            throw new Error("User with this email / username not found");
+        }
+
+        // check if user blocked or not
+        if (user.status === EUserStatus.blocked) {
+            throw new Error("User is blocked");
+        }
+
+        const TOKEN_SECRET: string | undefined = process.env.TOKEN_SECRET;
+        if (!TOKEN_SECRET) throw new Error("Token secret not found");
+        // generate jwt token for user
+        const token: string = jwt.sign(
+            { userId: user.userId, userType: user.userType },
+            TOKEN_SECRET
+        );
+
+        // add token to redis database
+    } catch (error) {
+        return res.status(500).send({
+            status: "failed",
+            message: error instanceof Error ? error.message : error,
+        });
+    }
+};
+
+export const signup = async (
+    req: Request,
+    res: Response,
+    next: NextFunction
+) => {
+    try {
+        // get data from body
+
+        const userData: ISignUpUser = req.body as ISignUpUser;
+
+        if (!userData.email) throw new Error("email or username not provided");
+
+        if (!userData.password) throw new Error("password is not provided");
+
+        // check if user exists in database?
+        let user: IUser | null = await User.findOne({
+            userName: userData.userName,
+        });
+
+        if (user) {
+            throw new Error("User with this email / username already exists");
+        }
+
+        const passwordSalt = bcrypt.genSaltSync(12);
+        const passwordHash = bcrypt.hashSync(userData.password, passwordSalt);
+
+        const newUser: IUser = new User({
+            userId: uuidv4(),
+            userName: userData.userName,
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            passwordHash: passwordHash,
+            passwordSalt: passwordSalt,
+            country: userData.country,
+            locLat: userData.locLat,
+            locLong: userData.locLong,
+            isPremium: false,
+            userType: EUserType.normal,
+            status: EUserStatus.allowed,
+        });
+
+        await newUser.save();
+
+        const TOKEN_SECRET: string | undefined = process.env.TOKEN_SECRET;
+        if (!TOKEN_SECRET) throw new Error("Token secret not found");
+        // generate jwt token for user
+        const token: string = jwt.sign(
+            { userId: newUser.userId, userType: newUser.userType },
+            TOKEN_SECRET
+        );
+
+        // add token to redis database
+
+        return res.redirect(302, "/home");
+    } catch (error) {
+        return res.status(500).send({
+            status: "failed",
+            message: error instanceof Error ? error.message : error,
+        });
+    }
+};

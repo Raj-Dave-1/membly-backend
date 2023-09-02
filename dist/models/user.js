@@ -11,7 +11,16 @@ const UserSchema = new mongoose_1.Schema({
         required: true,
         unique: true,
     },
-    name: {
+    userName: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    firstName: {
+        type: String,
+        required: true,
+    },
+    lastName: {
         type: String,
         required: true,
     },
@@ -51,6 +60,8 @@ const UserSchema = new mongoose_1.Schema({
         required: true,
         default: enums_1.EUserType.normal,
     },
+}, {
+    timestamps: true,
 });
 // return model from schema
 const User = (0, mongoose_1.model)("User", UserSchema);

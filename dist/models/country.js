@@ -13,6 +13,8 @@ const CountrySchema = new mongoose_1.Schema({
         required: true,
         unique: true,
     },
+}, {
+    timestamps: true,
 });
 const Country = (0, mongoose_1.model)("Country", CountrySchema);
 exports.default = Country;
