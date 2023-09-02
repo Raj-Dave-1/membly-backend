@@ -43,6 +43,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const user_1 = __importDefault(require("../models/user"));
 const enums_1 = require("../constants/enums");
 const redis_client_1 = __importDefault(require("../utils/redis-client"));
+const config_1 = require("../config/config");
 const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // get email id / username and password from body
@@ -82,8 +83,10 @@ const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* ()
         // generate jwt token for user
         const token = jwt.sign({ userId: user.userId, userType: user.userType }, TOKEN_SECRET);
         // add token to redis database
-        const REDIS_EXP_TIME = Number.parseInt(process.env.REDIS_EXP_TIME || "30000"); // default: 30 sec
-        const result = yield redisClient.setEx(user.userId, REDIS_EXP_TIME, token);
+        const redisExpTime = Number.parseInt(process.env.REDIS_EXP_TIME || config_1.REDIS_EXP_TIME); // default: 30 sec
+        const result = yield redisClient.set(user.userId, token, {
+            EX: redisExpTime,
+        });
         console.log(result);
         return res.send({
             status: "success",
@@ -141,8 +144,10 @@ const signup = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
         // add token to redis database
         // add token to redis database
         const redisClient = redis_client_1.default.getInstance().getClient();
-        const REDIS_EXP_TIME = Number.parseInt(process.env.REDIS_EXP_TIME || "30000"); // default: 30 sec
-        const result = yield redisClient.setEx(token, REDIS_EXP_TIME, "valid");
+        const redisExpTime = Number.parseInt(process.env.REDIS_EXP_TIME || config_1.REDIS_EXP_TIME); // default: 30 sec
+        const result = yield redisClient.set(token, "valid", {
+            EX: redisExpTime,
+        });
         console.log(result);
         return res.redirect(302, "/home");
     }

@@ -10,6 +10,7 @@ import IUser from "../interfaces/user";
 import { EUserStatus, EUserType } from "../constants/enums";
 import ISignUpUser from "../interfaces/signupUser";
 import RedisClient from "../utils/redis-client";
+import { REDIS_EXP_TIME, REDIS_EXP_TIME } from "../config/config";
 
 export const login = async (
     req: Request,
@@ -61,14 +62,12 @@ export const login = async (
         );
 
         // add token to redis database
-        const REDIS_EXP_TIME: number = Number.parseInt(
-            process.env.REDIS_EXP_TIME || "30000"
+        const redisExpTime: number = Number.parseInt(
+            process.env.REDIS_EXP_TIME || REDIS_EXP_TIME
         ); // default: 30 sec
-        const result = await redisClient.setEx(
-            user.userId,
-            REDIS_EXP_TIME,
-            token
-        );
+        const result = await redisClient.set(user.userId, token, {
+            EX: redisExpTime,
+        });
         console.log(result);
 
         return res.send({
@@ -140,10 +139,12 @@ export const signup = async (
         // add token to redis database
         // add token to redis database
         const redisClient = RedisClient.getInstance().getClient();
-        const REDIS_EXP_TIME: number = Number.parseInt(
-            process.env.REDIS_EXP_TIME || "30000"
+        const redisExpTime: number = Number.parseInt(
+            process.env.REDIS_EXP_TIME || REDIS_EXP_TIME
         ); // default: 30 sec
-        const result = await redisClient.setEx(token, REDIS_EXP_TIME, "valid");
+        const result = await redisClient.set(token, "valid", {
+            EX: redisExpTime,
+        });
         console.log(result);
 
         return res.redirect(302, "/home");
