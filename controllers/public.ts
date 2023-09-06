@@ -10,7 +10,7 @@ import IUser from "../interfaces/user";
 import { EUserStatus, EUserType } from "../constants/enums";
 import ISignUpUser from "../interfaces/signupUser";
 import RedisClient from "../utils/redis-client";
-import { REDIS_EXP_TIME, REDIS_EXP_TIME } from "../config/config";
+import { REDIS_EXP_TIME } from "../config/config";
 
 export const login = async (
     req: Request,
