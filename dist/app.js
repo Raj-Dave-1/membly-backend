@@ -17,6 +17,10 @@ app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.use(body_parser_1.default.json());
 // initialize redis database
 redis_client_1.default.getInstance().getClient();
+app.use("/", (req, res, next) => {
+    console.log(req.url, req.originalUrl);
+    next();
+});
 app.use(public_1.default);
 app.use(isAuth_1.default);
 app.use("/", (req, res, next) => {

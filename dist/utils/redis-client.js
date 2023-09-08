@@ -37,7 +37,6 @@ const redis = __importStar(require("redis"));
 class RedisClient {
     constructor() {
         this.client = redis.createClient({
-            // TODO: instead of using root:root use env variable for username and password
             url: "redis://redis:6379",
         });
         this.client.on("connect", (err) => {

@@ -22,6 +22,10 @@ app.use(bodyParser.json());
 // initialize redis database
 RedisClient.getInstance().getClient();
 
+app.use("/", (req, res, next) => {
+    console.log(req.url, req.originalUrl);
+    next();
+});
 app.use(publicRoutes);
 app.use(isAuth);
 
