@@ -84,9 +84,8 @@ const login = (req, res, next) => __awaiter(void 0, void 0, void 0, function* ()
         const token = jwt.sign({ userId: user.userId, userType: user.userType }, TOKEN_SECRET);
         // add token to redis database
         const redisExpTime = Number.parseInt(process.env.REDIS_EXP_TIME || config_1.REDIS_EXP_TIME);
-        const result = yield redisClient.set(`user:${user.userId}`, token, {
-            EX: redisExpTime,
-        });
+        const result = yield redisClient.hSet("user", user.userId, token);
+        redisClient.expire(`user:${user.userId}`, redisExpTime);
         console.log(result);
         return res.send({
             status: "success",
@@ -145,9 +144,8 @@ const signup = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
         // add token to redis database
         const redisClient = redis_client_1.default.getInstance().getClient();
         const redisExpTime = Number.parseInt(process.env.REDIS_EXP_TIME || config_1.REDIS_EXP_TIME);
-        const result = yield redisClient.set(`user:${newUser.userId}`, token, {
-            EX: redisExpTime,
-        });
+        const result = yield redisClient.hSet("user", newUser.userId, token);
+        redisClient.expire(`user:${newUser.userId}`, redisExpTime);
         console.log(result);
         return res.redirect(302, "/home");
     }
