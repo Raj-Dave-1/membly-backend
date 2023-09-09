@@ -6,5 +6,5 @@ exports.MONGO_PORT = 27017;
 exports.MONGO_HOST = "mongo";
 exports.MONGO_USER = "root";
 exports.MONGO_PASSWORD = "root";
-exports.REDIS_EXP_TIME = "30";
+exports.REDIS_EXP_TIME = "3600"; // 1 hour
 exports.REDIS_PASSWORD = "root";

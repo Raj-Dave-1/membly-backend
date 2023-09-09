@@ -2,8 +2,12 @@
 
 import { Request, Response, NextFunction } from "express";
 import * as jwt from "jsonwebtoken";
+import IUser from "../interfaces/user";
+import User from "../models/user";
+import { EUserStatus } from "../constants/enums";
+import RedisClient from "../utils/redis-client";
 
-export default (req: Request, res: Response, next: NextFunction) => {
+export default async (req: Request, res: Response, next: NextFunction) => {
     // get authorization from headers
     const authorization: string | undefined = req.get("Authorization");
 
@@ -35,6 +39,38 @@ export default (req: Request, res: Response, next: NextFunction) => {
 
         if (!userId || !userType)
             throw new Error("Can not fetch user id or user type from token");
+
+        // get user and check if status is blocked
+        const user: IUser | null = await User.findOne({ userId });
+        if (!user) {
+            return res.send({
+                status: "fail",
+                message: "User Does Not Exists",
+            });
+        }
+        if (user.status === EUserStatus.blocked) {
+            return res.send({
+                status: "fail",
+                message: "User is blocked",
+            });
+        }
+
+        // check if user is logged in or not using redis
+        const redisClient = RedisClient.getInstance().getClient();
+        if ((await redisClient.exists(`user:${userId}`)) === 0) {
+            return res.send({
+                status: "fail",
+                message: "Please login first",
+            });
+        }
+
+        // check for token invalidation
+        if ((await redisClient.get(`user:${userId}`)) !== token) {
+            return res.send({
+                status: "fail",
+                message: "Token is invalidated",
+            });
+        }
 
         // save data to req headers
         req.headers.userId = userId;

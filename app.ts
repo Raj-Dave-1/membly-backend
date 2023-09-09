@@ -15,6 +15,8 @@ import {
     MONGO_USER,
 } from "./config/config";
 import { createUsers, removeAllUsers } from "./scripts/add users";
+import isAdmin from "./middlewares/isAdmin";
+import adminRoutes from "./routes/admin";
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -29,6 +31,7 @@ app.use("/", (req, res, next) => {
 });
 app.use(publicRoutes);
 app.use(isAuth);
+app.use("/admin", isAdmin, adminRoutes);
 
 app.use("/", (req, res, next) => {
     return res.send("SitaRam");

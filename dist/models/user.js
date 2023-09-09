@@ -61,6 +61,11 @@ const UserSchema = new mongoose_1.Schema({
         required: true,
         default: enums_1.EUserType.normal,
     },
+    status: {
+        type: String,
+        enum: enums_1.EUserStatus,
+        default: enums_1.EUserStatus.allowed,
+    },
 }, {
     timestamps: true,
 });

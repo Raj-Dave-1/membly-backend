@@ -12,6 +12,8 @@ const isAuth_1 = __importDefault(require("./middlewares/isAuth"));
 const public_1 = __importDefault(require("./routes/public"));
 const redis_client_1 = __importDefault(require("./utils/redis-client"));
 const config_1 = require("./config/config");
+const isAdmin_1 = __importDefault(require("./middlewares/isAdmin"));
+const admin_1 = __importDefault(require("./routes/admin"));
 const app = (0, express_1.default)();
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.use(body_parser_1.default.json());
@@ -23,6 +25,7 @@ app.use("/", (req, res, next) => {
 });
 app.use(public_1.default);
 app.use(isAuth_1.default);
+app.use("/admin", isAdmin_1.default, admin_1.default);
 app.use("/", (req, res, next) => {
     return res.send("SitaRam");
 });
