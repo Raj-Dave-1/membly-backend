@@ -34,10 +34,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const redis = __importStar(require("redis"));
+const config_1 = require("../config/config");
 class RedisClient {
     constructor() {
         this.client = redis.createClient({
-            url: "redis://redis:6379",
+            url: `redis://:${config_1.REDIS_PASSWORD}@redis:6379`,
         });
         this.client.on("connect", (err) => {
             console.log("Client connected to Redis...");

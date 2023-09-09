@@ -1,13 +1,14 @@
 // Dada Ki Jay Ho
 
 import * as redis from "redis";
+import { REDIS_PASSWORD } from "../config/config";
 
 export default class RedisClient {
     private static instance: RedisClient;
     private client: redis.RedisClientType;
     private constructor() {
         this.client = redis.createClient({
-            url: "redis://redis:6379",
+            url: `redis://:${REDIS_PASSWORD}@redis:6379`,
         });
 
         this.client.on("connect", (err) => {

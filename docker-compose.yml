@@ -20,6 +20,7 @@ services:
       - redis
   redis:
     image: redis
+    command: /bin/sh -c "redis-server --requirepass root"
   mongo:
     image: mongo
     environment:

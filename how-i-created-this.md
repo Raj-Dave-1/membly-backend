@@ -11,3 +11,12 @@
    -- 6.1 added redis module and container in docker
    -- 6.2 setup redis client
    -- [] 6.3 added auth / password for redis
+   [] 7. created react project for login and sign up and setup docker compose for the same
+   [] 8. created script for generating dummy database using chat gpt
+   [] 9. created find currently available peers functionality
+   -- 9.1 used pencil and paper to draw things and work flow
+   -- 9.2 used chat gpt to understand how to achieve this
+   -- 9.3 try to create different stage for currently avaialble users
+   -- 9.4 understand how to work with geospecial queries using chatgpt
+   [] 10. think of to use kafka in your project
+   []
