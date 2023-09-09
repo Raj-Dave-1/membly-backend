@@ -1,7 +1,7 @@
 // Dada Ki Jay Ho
 
 import { Document } from "mongoose";
-import { EUserType, EUserStatus } from "../constants/enums";
+import { EUserType, EUserStatus, ECountry } from "../constants/enums";
 
 export default interface IUser extends Document {
     userId: string;
@@ -11,7 +11,7 @@ export default interface IUser extends Document {
     email: string;
     passwordHash: string;
     passwordSalt: string;
-    country: string;
+    country: ECountry;
     locLat: number;
     locLong: number;
     isPremium: boolean;

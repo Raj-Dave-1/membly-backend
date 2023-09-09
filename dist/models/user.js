@@ -39,6 +39,7 @@ const UserSchema = new mongoose_1.Schema({
     },
     country: {
         type: String,
+        enum: enums_1.ECountry,
         required: true,
     },
     locLat: {

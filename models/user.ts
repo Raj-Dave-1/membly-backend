@@ -3,7 +3,7 @@
 // import Schema from mongoose
 import { Schema, model } from "mongoose";
 import IUser from "../interfaces/user";
-import { EUserType } from "../constants/enums";
+import { ECountry, EUserType } from "../constants/enums";
 
 // create schema
 const UserSchema = new Schema<IUser>(
@@ -41,6 +41,7 @@ const UserSchema = new Schema<IUser>(
         },
         country: {
             type: String,
+            enum: ECountry,
             required: true,
         },
         locLat: {

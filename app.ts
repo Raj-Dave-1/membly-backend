@@ -14,6 +14,7 @@ import {
     MONGO_PASSWORD,
     MONGO_USER,
 } from "./config/config";
+import { createUsers, removeAllUsers } from "./scripts/add users";
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
