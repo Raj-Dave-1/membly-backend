@@ -1,0 +1,10 @@
+# Dada Ki Jay Ho
+
+global:
+    scrape_interval: 4s
+
+scrape_configs:
+    - job_name: prometheus
+      static_configs:
+          # TODO: add 3000 as a port at the time of production
+          - targets: ["membly-backend-app:4000"]
