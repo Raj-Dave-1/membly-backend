@@ -57,7 +57,8 @@ export default async (req: Request, res: Response, next: NextFunction) => {
 
         // check if user is logged in or not using redis
         const redisClient = RedisClient.getInstance().getClient();
-        if ((await redisClient.exists(`user:${userId}`)) === 0) {
+
+        if ((await redisClient.hExists("user", userId)) === false) {
             return res.send({
                 status: "fail",
                 message: "Please login first",
@@ -65,7 +66,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
         }
 
         // check for token invalidation
-        if ((await redisClient.get(`user:${userId}`)) !== token) {
+        if ((await redisClient.hGet("user", userId)) !== token) {
             return res.send({
                 status: "fail",
                 message: "Token is invalidated",
