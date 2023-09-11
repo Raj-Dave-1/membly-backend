@@ -11,8 +11,9 @@
    -- 6.1 added redis module and container in docker
    -- 6.2 setup redis client
    -- 6.3 added auth / password for redis
-   []7. created script for generating dummy database using chat gpt
-   -- 7.1 add admin routes to get user info and list 8. added token invalidation
+7. created script for generating dummy database using chat gpt
+   -- 7.1 add admin routes to get user info and list 
+8. added token invalidation
    [] 8. created find currently available peers functionality
    -- 8.1 used pencil and paper to draw things and work flow
    -- 8.2 used chat gpt to understand how to achieve this

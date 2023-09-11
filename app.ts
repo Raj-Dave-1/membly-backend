@@ -29,9 +29,9 @@ app.use("/", (req, res, next) => {
     console.log(req.url, req.originalUrl);
     next();
 });
-app.use(publicRoutes);
-app.use(isAuth);
-app.use("/admin", isAdmin, adminRoutes);
+app.use("/api", publicRoutes);
+app.use("/api", isAuth);
+app.use("/api/admin", isAdmin, adminRoutes);
 
 app.use("/", (req, res, next) => {
     return res.send("SitaRam");

@@ -141,7 +141,6 @@ const signup = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
         // generate jwt token for user
         const token = jwt.sign({ userId: newUser.userId, userType: newUser.userType }, TOKEN_SECRET);
         // add token to redis database
-        // add token to redis database
         const redisClient = redis_client_1.default.getInstance().getClient();
         const redisExpTime = Number.parseInt(process.env.REDIS_EXP_TIME || config_1.REDIS_EXP_TIME);
         const result = yield redisClient.hSet("user", newUser.userId, token);

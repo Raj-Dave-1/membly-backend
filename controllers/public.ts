@@ -136,7 +136,6 @@ export const signup = async (
         );
 
         // add token to redis database
-        // add token to redis database
         const redisClient = RedisClient.getInstance().getClient();
         const redisExpTime: number = Number.parseInt(
             process.env.REDIS_EXP_TIME || REDIS_EXP_TIME
