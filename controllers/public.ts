@@ -65,7 +65,7 @@ export const login = async (
         const redisExpTime: number = Number.parseInt(
             process.env.REDIS_EXP_TIME || REDIS_EXP_TIME
         );
-        const result = await redisClient.hSet("user", user.userId, token);
+        const result = await redisClient.set(`user:${user.userId}`, token);
         redisClient.expire(`user:${user.userId}`, redisExpTime);
         console.log(result);
 
@@ -141,7 +141,7 @@ export const signup = async (
             process.env.REDIS_EXP_TIME || REDIS_EXP_TIME
         );
 
-        const result = await redisClient.hSet("user", newUser.userId, token);
+        const result = await redisClient.set(`user:${newUser.userId}`, token);
         redisClient.expire(`user:${newUser.userId}`, redisExpTime);
         console.log(result);
 
