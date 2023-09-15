@@ -1,6 +1,5 @@
 // Dada Ki Jay Ho
 
-import { log } from "console";
 import express, { NextFunction, Request, Response } from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
@@ -84,7 +83,7 @@ mongoose
 
         const port = process.env.PORT;
         app.listen(port, () => {
-            log(`Server is listening on port ${port} ...`);
+            console.log(`Server is listening on port ${port} ...`);
         });
     })
     .catch((error) => console.log(error));

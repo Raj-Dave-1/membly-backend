@@ -15,12 +15,15 @@
    -- 7.1 add admin routes to get user info and list
 8. added token invalidation
    [] 9. added monitoring tools like prometheus, grafana and loki: piyush garg video https://www.youtube.com/watch?v=ddZjhv66o_o
-   [] 10. spin up to servers and connect them to same database and use nginx to route trafic in round robin fassion and also collect log of both the servers on same dashboard
-   [] 8. created find currently available peers functionality
-   -- 8.1 used pencil and paper to draw things and work flow
-   -- 8.2 used chat gpt to understand how to achieve this
-   -- 8.3 try to create different stage for currently avaialble users
-   -- 8.4 understand how to work with geospecial queries using chatgpt
-   [] 9. created react project for login and sign up and setup docker compose for the same
-   [] 10. think of to use kafka in your project
-   [] 11. do not store original long-lat / location of user because it could be dengeours problem
+   -- 9.1 used prom-client, response-time
+   [] 10 move for ioredis instead of redis library
+   [] 11. created find currently available peers functionality
+   -- use set of redis to maintain available user so that you have only 1 entry for 1 user even if user try to call api again and again
+   -- 11.1 used pencil and paper to draw things and work flow
+   -- 11.2 used chat gpt to understand how to achieve this
+   -- 11.3 try to create different stage for currently avaialble users
+   -- 11.4 understand how to work with geospecial queries using chatgpt
+   [] 12. created react project for login and sign up and setup docker compose for the same
+   [] 13. think of to use kafka in your project
+   [] 14. do not store original long-lat / location of user because it could be dengeours problem
+   [] 15. spin up to servers and connect them to same database and use nginx to route trafic in round robin fassion and also collect log of both the servers on same dashboard

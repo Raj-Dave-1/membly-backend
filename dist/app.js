@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const console_1 = require("console");
 const express_1 = __importDefault(require("express"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const mongoose_1 = __importDefault(require("mongoose"));
@@ -77,7 +76,7 @@ mongoose_1.default
     console.log("Connected to mongodb database...");
     const port = process.env.PORT;
     app.listen(port, () => {
-        (0, console_1.log)(`Server is listening on port ${port} ...`);
+        console.log(`Server is listening on port ${port} ...`);
     });
 })
     .catch((error) => console.log(error));
