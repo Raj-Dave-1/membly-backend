@@ -23,7 +23,7 @@
    -- 11.2 used chat gpt to understand how to achieve this
    -- 11.3 try to create different stage for currently avaialble users
    -- 11.4 understand how to work with geospecial queries using chatgpt
-   [] 12. created react project for login and sign up and setup docker compose for the same
+   [] - 12. created react project for login and sign up and setup docker compose for the same
    [] 13. think of to use kafka in your project
    [] 14. do not store original long-lat / location of user because it could be dengeours problem
    [] 15. spin up to servers and connect them to same database and use nginx to route trafic in round robin fassion and also collect log of both the servers on same dashboard

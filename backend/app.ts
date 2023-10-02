@@ -66,9 +66,9 @@ app.get("/metrics", async (req: Request, res: Response) => {
     return res.send(metrics);
 });
 
-app.use("/", publicRoutes);
-app.use("/api", isAuth);
-app.use("/api/admin", isAdmin, adminRoutes);
+app.use("/api/v1", publicRoutes);
+app.use("/api/v1/", isAuth);
+app.use("/api/v1/admin/", isAdmin, adminRoutes);
 
 app.use("/", async (req, res, next) => {
     return res.send("SitaRam");

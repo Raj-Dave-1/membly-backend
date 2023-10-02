@@ -1,7 +1,6 @@
 {
   "name": "membly",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
     "build": "tsc",
@@ -33,5 +32,6 @@
     "@types/response-time": "^2.3.5",
     "@types/uuid": "^9.0.3",
     "nodemon": "^3.0.1"
-  }
+  },
+  "description": ""
 }
