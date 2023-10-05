@@ -14,6 +14,7 @@
 7. created script for generating dummy database using chat gpt
    -- 7.1 add admin routes to get user info and list
 8. added token invalidation
+   [] 9. started working on frontend part (WebRTC from piyush garg's videos)
    [] 9. added monitoring tools like prometheus, grafana and loki: piyush garg video https://www.youtube.com/watch?v=ddZjhv66o_o
    -- 9.1 used prom-client, response-time
    [] 10 move for ioredis instead of redis library

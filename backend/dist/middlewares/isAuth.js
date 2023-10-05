@@ -87,7 +87,7 @@ exports.default = (req, res, next) => __awaiter(void 0, void 0, void 0, function
             });
         }
         // check for token invalidation
-        if ((yield redisClient.hGet("user", userId)) !== token) {
+        if ((yield redisClient.get(`user:${userId}`)) !== token) {
             return res.send({
                 status: "fail",
                 message: "Token is invalidated",

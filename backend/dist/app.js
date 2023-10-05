@@ -64,9 +64,9 @@ app.get("/metrics", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     const metrics = yield prom_client_1.default.register.metrics();
     return res.send(metrics);
 }));
-app.use("/", public_1.default);
-app.use("/api", isAuth_1.default);
-app.use("/api/admin", isAdmin_1.default, admin_1.default);
+app.use("/api/v1", public_1.default);
+app.use("/api/v1/", isAuth_1.default);
+app.use("/api/v1/admin/", isAdmin_1.default, admin_1.default);
 app.use("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     return res.send("SitaRam");
 }));
